@@ -15,12 +15,14 @@
 import inspect
 from functools import wraps
 import pandas as pd
-from typing import _TypingEmpty, _tp_cache, Generic,get_type_hints
+from typing import _TypingEmpty, _tp_cache, Generic, get_type_hints
 import numpy as np
 try:
-    from typing import GenericMeta # Python 3.6
-except ImportError: # Python 3.7
-    class GenericMeta(type): pass
+    from typing import GenericMeta  # Python 3.6
+except ImportError:  # Python 3.7
+    class GenericMeta(type):
+        pass
+
 
 def validate(f):
     signature = inspect.signature(f)
@@ -50,6 +52,7 @@ def validate(f):
 
     return wrapper
 
+
 def _get_columns_dtypes(p):
     columns = set()
     dtypes = {}
@@ -73,6 +76,7 @@ def _get_columns_dtypes(p):
         raise TypeError("Dataset[col1, col2, ...]: each col must be a string, list or set.")
 
     return columns, dtypes
+
 
 class DatasetMeta(GenericMeta):
     """Metaclass for Dataset (internal)."""
@@ -100,6 +104,7 @@ class DatasetMeta(GenericMeta):
         meta.dtypes = dtypes
 
         return meta
+
 
 class Dataset(pd.DataFrame, extra=Generic, metaclass=DatasetMeta):
     """Defines type Dataset to serve as column name & type enforcement for pandas DataFrames"""

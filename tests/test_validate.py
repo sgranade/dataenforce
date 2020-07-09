@@ -55,15 +55,18 @@ def test_validate_empty():
     with pytest.raises(TypeError):
         process(False)
 
+
 def test_validate_dtypes():
-    df = pd.DataFrame(dict(a=[1,2,3], b=[4.1,5.1,6.1], c=["a", "b", "c"], d=[datetime.now().replace(hour=x) for x in [7,8,9]]))
+    df = pd.DataFrame(dict(a=[1, 2, 3], b=[4.1, 5.1, 6.1], c=["a", "b", "c"], d=[datetime.now().replace(hour=x) for x in [7, 8, 9]]))
 
     @validate
-    def process1(data: Dataset["a": int, "b": np.float, "c": object, "d": np.datetime64]):
+    def process1(data: Dataset["a": np.int64, "b": np.float, "c": object, "d": np.datetime64]):
         pass
+
     @validate
     def process2(data: Dataset["a": float, "b", ...]):
         pass
+
     @validate
     def process3(data: Dataset["a": np.datetime64, ...]):
         pass
